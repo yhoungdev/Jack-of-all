@@ -1,6 +1,9 @@
 import moment from "moment";
 import { TELEGRAM_BOT_KEY } from "../constants";
 import { taskList } from "../utils/tasksList";
+import { tellDadJokes } from "./dadJokes";
+import { catImagesController } from "./catImagesController";
+import { dailyQuoteController } from "./dailyQuotesController";
 const TelegramBot = require("node-telegram-bot-api");
 
 let bot = new TelegramBot(TELEGRAM_BOT_KEY, { polling: true });
@@ -31,17 +34,28 @@ const onStartCommand = () => {
       botReply(chatId, ` I am Jack and i can help you automate tasks `);
       botReply(chatId, ` I can do things like: `);
 
-    
-      const actions =  taskList?.map(({ title, description }) => {
-        return `${title}: ${description}`
+      const actions = taskList?.map(({ title, description }) => {
+        return `${title}: ${description}`;
       });
-         botReply(chatId, actions.join('\n') );
-    }, 1700);
-  });
-};
 
-const sendIntroductoryMsg = () => {
-  bot.sendMessage();
+      botReply(chatId, actions.join("\n"));
+    }, 1550);
+  });
+
+  //tell a dad joke
+  bot.onText(/\/jokes/, (msg: any, match: any) =>
+    tellDadJokes(msg.chat.id, match, botReply)
+  );
+
+  //qoutes 
+  bot.onText(/\/quote/, (msg: any, match: any) =>
+  dailyQuoteController(msg.chat.id, match, botReply)
+);
+
+  //cat images controller
+  bot.onText(/\/cat photos/, (msg: any, match: any) =>
+    catImagesController(msg.chat.id, match, botReply)
+  );
 };
 
 module.exports = {
