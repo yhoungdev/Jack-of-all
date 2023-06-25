@@ -4,6 +4,7 @@ import { taskList } from "../utils/tasksList";
 import { tellDadJokes } from "./dadJokes";
 import { catImagesController } from "./catImagesController";
 import { dailyQuoteController } from "./dailyQuotesController";
+import { reminderController } from "./reminderController";
 const TelegramBot = require("node-telegram-bot-api");
 
 let bot = new TelegramBot(TELEGRAM_BOT_KEY, { polling: true });
@@ -56,6 +57,12 @@ const onStartCommand = () => {
   bot.onText(/\/cat photos/, (msg: any, match: any) =>
     catImagesController(msg.chat.id, match, botReply)
   );
+
+  //reminder
+  bot.onText(/\/reminder/, (msg: any, match: any) =>
+  reminderController(msg.chat.id, match, botReply)
+);
+
 };
 
 module.exports = {
