@@ -1,7 +1,7 @@
-const controller = require("./controllers/botController")
+const controller = require("./controllers/botController");
 
 const bot = () => {
-   controller.onStartCommand()
-}
+  controller.onStartCommand();
+};
 
-module.exports = bot;   
+module.exports = bot;
